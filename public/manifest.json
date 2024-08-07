@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "vite-ts-react-test",
+    "name": "Clothify",
     "version": "1.0",
-    "description": "",
+    "description": "Clothify is a chrome extension that allows you to get the cheaper or better alternatives of the clothes you are looking at.",
     "action": {
         "default_popup": "index.html"
     },

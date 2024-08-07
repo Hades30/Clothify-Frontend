@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import "./slider.css";
 import ItemGrid from "./Slider";
 
 function App() {
@@ -25,22 +24,44 @@ function App() {
         func: () => {
           const str = document.getElementsByClassName(
             "image-grid-imageContainer"
-          )[0].childNodes[0].style.backgroundImage;
+          )?.[0]?.childNodes[0]?.style?.backgroundImage;
           console.log(str);
-          const startIndex = str.indexOf('("') + 2; // +2 to skip over `("`
+          if (str) {
+            const startIndex = str.indexOf('("') + 2; // +2 to skip over `("`
 
-          // Find the end index of the URL
-          const endIndex = str.indexOf('")');
+            // Find the end index of the URL
+            const endIndex = str.indexOf('")');
 
-          // Extract the URL using substrings
-          const url = str.substring(startIndex, endIndex);
-          console.log(url);
+            // Extract the URL using substrings
+            const url = str.substring(startIndex, endIndex);
+            console.log(url);
 
-          return url;
+            return url;
+          }
+          let images = Array.from(document.getElementsByTagName("img"));
+          console.log(images);
+          let largestImage = null;
+          let maxHeight = 0;
+
+          // Iterate through all images to find the one with the largest area
+          images.forEach((img) => {
+            // Calculate the area of the current image
+            let area = img.width * img.height;
+
+            // Check if this image has the largest area so far
+            if (area > maxHeight) {
+              maxHeight = area;
+              largestImage = img;
+            }
+          });
+          console.log(largestImage);
+          if (largestImage) {
+            return largestImage.src;
+          }
+          return "Failed";
         },
       },
       (results) => {
-        console.log(results[0].result);
         setImageUrl(results[0].result);
       }
     );
@@ -71,15 +92,23 @@ function App() {
   // }, []);
 
   useEffect(() => {
-    if (imageUrl) hitServer(imageUrl);
+    if (imageUrl && imageUrl != "Failed") hitServer(imageUrl);
   }, [hitServer, imageUrl]);
 
+  if (imageUrl === "Failed") return <div>No content</div>;
+
+  if (!results)
+    return (
+      <div style={{ height: "500px" }}>
+        {" "}
+        <h1 style={{ color: "black" }}>Loading</h1>
+      </div>
+    );
+
   return (
-    <>
-      <h1>Shopping Cart Slider</h1>
-      <div id="text-secret"></div>
+    <div style={{ background: "white" }}>
       {results ? <ItemGrid data={results} /> : "Loading"}
-    </>
+    </div>
   );
 }
 

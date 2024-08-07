@@ -1,16 +1,15 @@
 // src/ItemGrid.js
 import React from "react";
 import ItemCard from "./ItemCard";
-import "./slider.css";
 
 const items = [
   {
     id: 1,
     name: "Item 1",
     price: "19.99",
-    description: "Description 1",
+    source: "Description 1",
     link: "#1",
-    image: "https://via.placeholder.com/300",
+    imageUrl: "https://via.placeholder.com/300",
   },
   {
     id: 2,
@@ -48,7 +47,7 @@ const items = [
     id: 6,
     name: "Item 6",
     price: "69.99",
-    description: "Description 6",
+    source: "Description 6",
     link: "#6",
     image: "https://via.placeholder.com/300",
   },
@@ -56,7 +55,7 @@ const items = [
 
 const ItemGrid = ({ data }) => {
   return (
-    <div className="item-grid">
+    <div>
       {data?.map((item, index) => (
         <ItemCard key={index} item={item} />
       ))}
